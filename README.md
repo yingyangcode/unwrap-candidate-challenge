@@ -69,6 +69,12 @@ Keep in mind that during our interview, we will be extending your API with addit
 
 Good luck!
 
+## Submission
+
+Please submit your code via a git repo, zip file, or any other method you prefer. Please include a README with instructions on how to run your API.
+
+Please do not submit a pull request to this repo.
+
 ## API Specification
 
 The test script expects your API to implement the following endpoints:
