@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from datetime import date
 
 
@@ -7,7 +7,8 @@ class CheckoutCreateSchema(BaseModel):
     customer_id: str
     due_date: str
 
-    @validator("due_date")
+    @field_validator("due_date")
+    @classmethod
     def due_date_must_be_in_future(cls, v):
         due = date.fromisoformat(v)
         if due <= date.today():
