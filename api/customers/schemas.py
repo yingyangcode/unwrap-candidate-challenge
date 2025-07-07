@@ -1,10 +1,10 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class CustomerCreateSchema(BaseModel):
-    name: str
+    name: str = Field(min_length=1)
     email: EmailStr
-    customer_id: str
+    customer_id: str = Field(min_length=1)
 
 
 class CustomerResponseSchema(BaseModel):

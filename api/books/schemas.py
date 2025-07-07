@@ -2,9 +2,9 @@ from pydantic import BaseModel, Field
 
 
 class BookCreateSchema(BaseModel):
-    title: str
-    author: str
-    isbn: str
+    title: str = Field(min_length=1)
+    author: str = Field(min_length=1)
+    isbn: str = Field(min_length=1)
     copies: int = Field(
         ..., gt=0, description="Number of copies must be greater than 0"
     )

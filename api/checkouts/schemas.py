@@ -1,11 +1,11 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 from datetime import date
 
 
 class CheckoutCreateSchema(BaseModel):
-    isbn: str
-    customer_id: str
-    due_date: str
+    isbn: str = Field(min_length=1)
+    customer_id: str = Field(min_length=1)
+    due_date: str = Field(min_length=1)
 
     @field_validator("due_date")
     @classmethod
@@ -26,8 +26,8 @@ class CheckoutResponseSchema(BaseModel):
 
 
 class ReturnCreateSchema(BaseModel):
-    isbn: str
-    customer_id: str
+    isbn: str = Field(min_length=1)
+    customer_id: str = Field(min_length=1)
 
 
 class ReturnResponseSchema(BaseModel):
