@@ -1,10 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
+from datetime import date
 
 
 class CheckoutCreateSchema(BaseModel):
     isbn: str
     customer_id: str
     due_date: str
+
+    @validator("due_date")
+    def due_date_must_be_in_future(cls, v):
+        due = date.fromisoformat(v)
+        if due <= date.today():
+            raise ValueError("Due date must be in the future")
+        return v
 
 
 class CheckoutResponseSchema(BaseModel):

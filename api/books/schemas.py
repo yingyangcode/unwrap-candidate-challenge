@@ -1,12 +1,13 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
 
 
 class BookCreateSchema(BaseModel):
     title: str
     author: str
     isbn: str
-    copies: int
+    copies: int = Field(
+        ..., gt=0, description="Number of copies must be greater than 0"
+    )
 
 
 class BookResponseSchema(BaseModel):
