@@ -1,2 +1,3 @@
 class LibraryConfig:
     MAX_CHECKOUTS_PER_CUSTOMER = 5
+    MAX_LOAN_PERIOD_DAYS = 30

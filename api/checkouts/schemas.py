@@ -1,18 +1,31 @@
 from pydantic import BaseModel, Field, field_validator
-from datetime import date
+from datetime import date, timedelta
+from app.config import LibraryConfig
 
 
 class CheckoutCreateSchema(BaseModel):
-    isbn: str = Field(min_length=1)
-    customer_id: str = Field(min_length=1)
-    due_date: str = Field(min_length=1)
+    isbn: str = Field(min_length=1, max_length=20)
+    customer_id: str = Field(min_length=1, max_length=20, pattern=r'^CUST\d{3}$')
+    due_date: str = Field(min_length=1, max_length=10)
 
     @field_validator("due_date")
     @classmethod
     def due_date_must_be_in_future(cls, v):
-        due = date.fromisoformat(v)
-        if due <= date.today():
+        try:
+            due = date.fromisoformat(v)
+        except ValueError:
+            raise ValueError("Invalid date format. Use YYYY-MM-DD")
+        
+        today = date.today()
+        
+        if due < today:
             raise ValueError("Due date must be in the future")
+        
+        # Maximum loan period from config
+        max_due_date = today + timedelta(days=LibraryConfig.MAX_LOAN_PERIOD_DAYS)
+        if due > max_due_date:
+            raise ValueError(f"Due date cannot be more than {LibraryConfig.MAX_LOAN_PERIOD_DAYS} days in the future")
+        
         return v
 
 
@@ -26,8 +39,8 @@ class CheckoutResponseSchema(BaseModel):
 
 
 class ReturnCreateSchema(BaseModel):
-    isbn: str = Field(min_length=1)
-    customer_id: str = Field(min_length=1)
+    isbn: str = Field(min_length=1, max_length=20)
+    customer_id: str = Field(min_length=1, max_length=20, pattern=r'^CUST\d{3}$')
 
 
 class ReturnResponseSchema(BaseModel):
